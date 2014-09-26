@@ -1,0 +1,15 @@
+{
+  "name":    "ctrl",
+  "version": "0.0.1",
+  "author":  "Juergen Fitschen <me@jue.yt>",
+  "license": "MIT",
+  "scripts": {
+    "start":   "node index.js"
+  },
+  "dependencies": {
+    "express": "4.0.x",
+    "mongodb": "1.4.x",
+    "json-schema": "0.2.x",
+    "async": "0.9.x"
+  }
+}
