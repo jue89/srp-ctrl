@@ -1,0 +1,61 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "http://api.13pm.eu/v1.0",
+	"required":true,
+  "additionalProperties": false,
+	"properties":{
+		"confirmed": {
+			"type":"boolean",
+			"id": "http://api.13pm.eu/v1.0/confirmed",
+			"required":false
+		},
+		"email": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/email",
+			"required":true,
+      "pattern":"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
+		},
+		"enabled": {
+			"type":"boolean",
+			"id": "http://api.13pm.eu/v1.0/enabled",
+			"required":false
+		},
+		"id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/id",
+			"required":true,
+      "minLength": 3,
+      "maxLength": 24
+		},
+		"password": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/password",
+			"required":true,
+      "minLength": 8
+		},
+		"roles": {
+			"type":"object",
+			"id": "http://api.13pm.eu/v1.0/roles",
+			"required":true,
+      "additionalProperties": false,
+			"properties":{
+				"admin": {
+					"type":"boolean",
+					"id": "http://api.13pm.eu/v1.0/roles/admin",
+					"required":true
+				},
+				"guest": {
+					"type":"boolean",
+					"id": "http://api.13pm.eu/v1.0/roles/guest",
+					"required":true
+				},
+				"operator": {
+					"type":"boolean",
+					"id": "http://api.13pm.eu/v1.0/roles/operator",
+					"required":true
+				}
+			}
+		}
+	}
+}
