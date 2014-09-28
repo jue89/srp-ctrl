@@ -23,6 +23,18 @@ module.exports = function( err, callback ) {
         title: "Malformed e-mail address."
       } );
 
+    case 'id':
+      if( m == "is missing and it is required" ) return callback( {
+        id:    'users-add-id-missing',
+        code:  409,
+        title: "No user ID given."
+      } );
+      return callback( {
+        id:    'users-add-id-malformed',
+        code:  409,
+        title: "Malformed user Id. Must have at least 3 charaters."
+      } );
+
     case 'password':
       if( m == "is missing and it is required" ) return callback( {
         id:    'users-add-password-missing',

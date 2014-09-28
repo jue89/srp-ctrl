@@ -10,6 +10,7 @@ var validate = require( 'json-schema' );
 var config = require( '../lib/config.js' );
 var mongo = require( '../lib/db.js' );
 var password = require( '../lib/password.js' );
+var helper = require( '../lib/helper.js' );
 
 
 
@@ -163,7 +164,18 @@ ModelUsers.prototype.find = function( obj, callback ) {
   } );
 
   //// Query object
-  var query = obj.filter ? obj.filter : {};
+  var q = {};
+  var f = obj.filter;
+  for( i in obj.filter ) {
+    switch( i ) {
+      case 'email': q['email'] = f.email; break;
+      case 'enabled': q['enabled'] = helper.parseBool(f.enabled); break;
+      case 'confirmed': q['confirmed'] = helper.parseBool(f.confirmed); break;
+      case 'operator': q['roles.operator'] = helper.parseBool(f.operator); break;
+      case 'guest': q['roles.guest'] = helper.parseBool(f.guest); break;
+      case 'admin': q['roles.admin'] = helper.parseBool(f.admin); break;
+    }
+  }
 
   // Query options
   var opts = {
@@ -176,8 +188,8 @@ ModelUsers.prototype.find = function( obj, callback ) {
   // Execute count objects and query in parallel.
   var self = this;
   async.parallel( {
-    count: function( cb ) { self.db.count( cb ); },
-    query: function( cb ) { self.db.find( query, opts ).toArray( cb ); }
+    count: function( cb ) { self.db.count( q, cb ); },
+    query: function( cb ) { self.db.find( q, opts ).toArray( cb ); }
   }, function( err, res ) {
     if( err ) throw err;
     if( err ) return callback( {
@@ -227,8 +239,8 @@ ModelUsers.prototype.add = function( obj, callback ) {
   var now = new Date();
   obj.last_changed = now;
   obj.created = now;
-  if( ! obj.enabled ) obj.enabled = true;
-  if( ! obj.confirmed ) obj.confirmed = false;
+  if( obj.enabled == null ) obj.enabled = true;
+  if( obj.confirmed == null ) obj.confirmed = false;
 
   //
   // Save scope
@@ -268,6 +280,9 @@ ModelUsers.prototype.add = function( obj, callback ) {
           title: "Unknown server error."
         } )
       };
+
+      // Decapsulate
+      res = res[0];
 
       // And rename id field another time
       res.id = res._id;
@@ -332,7 +347,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
         { _id: id },
         [ [ '_id', 1 ] ],
         modify,
-        { w: 1 },
+        { w: 1, new: true },
         cb
       );
     }
