@@ -4,9 +4,12 @@
 
 // Libs
 var express = require( 'express' );
+var bodyParser = require( 'body-parser' );
 
 // Controller
 var authController = require('./controller/auth.js');
+var jsonController = require('./controller/json.js');
+var usersController = require('./controller/users.js');
 
 
 
@@ -16,11 +19,13 @@ var authController = require('./controller/auth.js');
 
 // Configure app
 var app = express();
+app.use( bodyParser.json({ type: 'application/*+json' }) );
 
 
 // Install controller
 authController( app );
-
+jsonController( app );
+usersController( app );
 
 // Catch all unhandled request
 app.use( function( req, res ) {
