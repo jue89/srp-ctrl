@@ -1,7 +1,20 @@
 {
+  "base": "http://localhost:8000",
   "port": 8000,
   "db": "mongodb://localhost:27017/wifi",
+  "mail": {
+    "sendMails": false,
+    "transporter": {
+      "port": 25,
+      "host": "localhost"
+    }
+  },
   "pagination": {
     "users": 50
+  },
+  "defaultRoles": {
+    "admin": false,
+    "operator": true,
+    "guest": true
   }
 }
