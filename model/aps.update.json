@@ -1,0 +1,22 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "http://api.13pm.eu/v1.0/aps",
+	"required":true,
+  "additionalProperties": false,
+	"properties":{
+		"user_id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/users/id",
+			"required":false,
+      "minLength": 3,
+      "maxLength": 24
+		},
+		"public_key": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/aps/public_key",
+			"required":false,
+			"pattern":"^[a-z0-9]{64}$"
+		}
+	}
+}
