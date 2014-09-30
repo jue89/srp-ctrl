@@ -370,7 +370,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
     delete res._id;
 
     // Emit event
-    self.emit( 'update', res );
+    self.emit( 'update', set, res );
 
     // Callback
     callback( null, res );
