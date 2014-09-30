@@ -1,18 +1,8 @@
 // Requirements
-var mongo = require( 'mongodb' ).MongoClient;
 var db = require( '../lib/db.js' );
 
-// Configuration
-var config = require( '../lib/config.js');
 
 describe( 'lib/db.js', function() {
-  // Remove all collections
-  before( function( done ) {
-    mongo.connect( config.db, function( err, db ){
-      db.dropDatabase();
-      done();
-    } );
-  } );
 
   it( 'should create a collection without indices', function(done) {
     db( 'test1', [], function( db ) { done(); } );

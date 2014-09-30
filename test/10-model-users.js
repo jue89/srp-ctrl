@@ -1,30 +1,10 @@
 // Requirements
-var mongo = require( 'mongodb' ).MongoClient;
-var users; // Required later, when database is clean
+var users = require( '../model/users.js' );
 
 // Configuration
 var config = require( '../lib/config.js');
 
 describe( 'model/users.js', function() {
-  // Remove all collections
-  before( function( done ) {
-    mongo.connect( config.db, function( err, db ){
-      db.dropDatabase();
-      done();
-    } );
-  } );
-
-  it( 'should return 500 error when database is not connected', function(done) {
-    users = require( '../model/users.js' );
-
-    users.get( 'notfound', {}, function( err, res ) {
-      if( err && err.code == 500 ) {
-        users.on( 'ready', done );
-      } else {
-        throw new Error();
-      }
-    } );
-  } );
 
   it( 'should return 404 error when getting a non-existent user', function(done) {
     users.get( 'notfound', {}, function( err, res ) {
