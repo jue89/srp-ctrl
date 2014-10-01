@@ -77,7 +77,8 @@ ModelAps.prototype._checkPreconditions = function( callback ) {
 
 // FUNC: Get ap by id
 // obj: {
-//        fields: [ field1, field2, ... ]
+//        fields: [ field1, field2, ... ],
+//        filter: { field1: (STR), field2: (STR) }
 //      }
 ModelAps.prototype.get = function( id, obj, callback ) {
   // CHECK PRECONDITIONS
@@ -92,6 +93,18 @@ ModelAps.prototype.get = function( id, obj, callback ) {
     fields[ item ] = 1;
   } );
 
+  // Side conditions
+  q = {
+    _id: id
+  };
+  var f = obj.filter;
+  for( i in obj.filter ) {
+    switch( i ) {
+      case 'user_id': q['user_id'] = f.user_id; break;
+      case 'ipv6_id': q['ipv6_id'] = f.ipv6_id; break;
+    }
+  }
+
   // Query options
   var opts = {
     fields: fields
@@ -99,7 +112,7 @@ ModelAps.prototype.get = function( id, obj, callback ) {
 
   // REQUEST OBJECT FROM DATABASE
   var self = this;
-  this.db.findOne( { _id: id }, opts, function( err, res ) {
+  this.db.findOne( q, opts, function( err, res ) {
     if( err ) return callback( {
       id:    'aps-db-error',
       code:  500,
@@ -276,6 +289,7 @@ ModelAps.prototype.add = function( obj, callback ) {
 },
 
 // FUNC: Modifies ap
+// id:  { field1: (STR), field2: (STR), ... }
 // set: {
 //        user_id: (STR),
 //        public_key: (STR)
@@ -292,13 +306,27 @@ ModelAps.prototype.update = function( id, set, callback ) {
   // Set last_seen
   set.last_seen = new Date();
 
+  // Build query
+  var q = {};
+  if( typeof id == "string" ) {
+    q['_id'] = id;
+  } else {
+    for( i in obj.filter ) {
+      switch( i ) {
+        case 'id': q['_id'] = id.id; break;
+        case 'user_id': q['user_id'] = id.user_id; break;
+        case 'ipv6_id': q['ipv6_id'] = id.ipv6_id; break;
+      }
+    }
+  }
+
   // Build modifier object
   var modify = { $set: set };
 
   // Execute update
   var self = this;
   this.db.findAndModify(
-    { _id: id },
+    q,
     [ [ '_id', 1 ] ],
     modify,
     { w: 1, new: true },
@@ -330,13 +358,28 @@ ModelAps.prototype.update = function( id, set, callback ) {
 },
 
 // FUNC: Removes ap
+// id:  { field1: (STR), field2: (STR), ... }
 ModelAps.prototype.remove = function( id, callback ) {
   // CHECK PRECONDITIONS
   if( ! this._checkPreconditions( callback ) ) return;
 
+  // Build query
+  var q = {};
+  if( typeof id == "string" ) {
+    q['_id'] = id;
+  } else {
+    for( i in obj.filter ) {
+      switch( i ) {
+        case 'id': q['_id'] = id.id; break;
+        case 'user_id': q['user_id'] = id.user_id; break;
+        case 'ipv6_id': q['ipv6_id'] = id.ipv6_id; break;
+      }
+    }
+  }
+
   // DELETE QUERY
   var self = this;
-  this.db.remove( { _id: id }, { w: 1 }, function( err, num ) {
+  this.db.remove( q, { w: 1 }, function( err, num ) {
     if( err ) return callback( {
       id:    'aps-delete-unkown',
       code:  500,
