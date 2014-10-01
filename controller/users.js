@@ -4,6 +4,7 @@
 
 var url = require( 'url' );
 var async = require( 'async' );
+var helper = require( '../lib/helper.js' );
 var usersModel = require( '../model/users.js' );
 var mail = require( '../lib/mail.js' );
 var config = require( '../lib/config.js' );
@@ -35,7 +36,7 @@ module.exports = function( app ) {
         var ret = {};
 
         // Build meta
-        var metaUrl = config.base + url.format( {
+        ret.meta = helper.paginator( config.base + url.format( {
           pathname: '/users',
           query: {
             fields: q.fields.join(','),
@@ -43,13 +44,7 @@ module.exports = function( app ) {
             include: q.include.join(','),
             filter: q.filter
           }
-        } );
-        ret.meta = {};
-        ret.meta.self = metaUrl + "&page=" + q.page;
-        ret.meta.prev = ( q.page > 0 ) ? metaUrl + "&page=" + (q.page-1) : null;
-        ret.meta.next = ( (q.page+1) * users.limit < users.count ) ?
-          metaUrl + "&page=" + (q.page+1) :
-          null;
+        } ) + "&page=", q.page, users.limit, users.count );
 
         // Includes
         if( q.include.length ) {
