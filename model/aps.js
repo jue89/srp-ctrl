@@ -179,7 +179,7 @@ ModelAps.prototype.find = function( obj, callback ) {
   //// Query object
   var q = {};
   var f = obj.filter;
-  for( i in obj.filter ) {
+  for( i in f ) {
     switch( i ) {
       case 'user_id': q['user_id'] = f.user_id; break;
       case 'ipv6_id': q['ipv6_id'] = f.ipv6_id; break;
@@ -322,7 +322,7 @@ ModelAps.prototype.update = function( id, set, callback ) {
   if( typeof id == "string" ) {
     q['_id'] = id;
   } else {
-    for( i in obj.filter ) {
+    for( i in id) {
       switch( i ) {
         case 'id': q['_id'] = id.id; break;
         case 'user_id': q['user_id'] = id.user_id; break;
@@ -392,7 +392,7 @@ ModelAps.prototype.remove = function( id, callback ) {
   if( typeof id == "string" ) {
     q['_id'] = id;
   } else {
-    for( i in obj.filter ) {
+    for( i in id ) {
       switch( i ) {
         case 'id': q['_id'] = id.id; break;
         case 'user_id': q['user_id'] = id.user_id; break;

@@ -98,7 +98,7 @@ ModelUsers.prototype.get = function( id, obj, callback ) {
     _id: id
   };
   var f = obj.filter;
-  for( i in obj.filter ) {
+  for( i in f ) {
     switch( i ) {
       case 'email': q['email'] = f.email; break;
       case 'enabled': q['enabled'] = helper.parseBool(f.enabled); break;
@@ -183,7 +183,7 @@ ModelUsers.prototype.find = function( obj, callback ) {
   //// Query object
   var q = {};
   var f = obj.filter;
-  for( i in obj.filter ) {
+  for( i in f ) {
     switch( i ) {
       case 'email': q['email'] = f.email; break;
       case 'enabled': q['enabled'] = helper.parseBool(f.enabled); break;
@@ -337,7 +337,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
   if( typeof id == "string" ) {
     q['_id'] = id;
   } else {
-    for( i in obj.filter ) {
+    for( i in id ) {
       switch( i ) {
         case 'id': q['_id'] = id.id; break;
         case 'email': q['email'] = id.email; break;
@@ -423,7 +423,7 @@ ModelUsers.prototype.remove = function( id, callback ) {
   if( typeof id == "string" ) {
     q['_id'] = id;
   } else {
-    for( i in obj.filter ) {
+    for( i in id ) {
       switch( i ) {
         case 'id': q['_id'] = id.id; break;
         case 'email': q['email'] = id.email; break;
