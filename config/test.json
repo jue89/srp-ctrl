@@ -11,7 +11,8 @@
   },
   "pagination": {
     "users": 50,
-    "aps": 50
+    "aps": 50,
+    "uds": 50
   },
   "defaultRoles": {
     "admin": false,
