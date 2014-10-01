@@ -1,0 +1,14 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "http://api.13pm.eu/v1.0/uds",
+	"required":true,
+  "additionalProperties": false,
+	"properties":{
+		"last_ap_id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/aps/id",
+			"required":false
+		}
+	}
+}
