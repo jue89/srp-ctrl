@@ -11,7 +11,7 @@ var ObjectID = require('mongodb').ObjectID;
 var config = require( '../lib/config.js' );
 var mongo = require( '../lib/db.js' );
 var helper = require( '../lib/helper.js' );
-
+var users = require( '../model/users.js' );
 
 
   ////////////////////////
@@ -72,7 +72,7 @@ ModelAps.prototype._checkPreconditions = function( callback ) {
 
   // Return: Everything is fine :)
   return true;
-},
+}
 
 
 // FUNC: Get ap by id
@@ -136,7 +136,7 @@ ModelAps.prototype.get = function( id, obj, callback ) {
     // Callback
     callback( null, res );
   } );
-},
+}
 
 // FUNC: Find aps
 // obj: {
@@ -224,7 +224,7 @@ ModelAps.prototype.find = function( obj, callback ) {
       data:  res.query
     } );
   } );
-},
+}
 
 // FUNC: Adds new ap
 // obj: {
@@ -252,41 +252,52 @@ ModelAps.prototype.add = function( obj, callback ) {
     ipv6_id: helper.objectIDtoIPv6( id )
   }
 
-  // Generate secret for AAA
   var self = this;
-  crypto.randomBytes( 8, function( err, secret ) {
-    if( err ) return callback({
-      id:    'aps-add-unkown',
-      code:  500,
-      title: "Unknown server error."
-    } );
+  async.waterfall( [
+    function( done ) {
+      // Ensure stated user exists and is operator
+      users.get( ap.user_id, { filter: { operator: true } }, done );
+    },
+    function( user, done ) {
+      // Generate secret
+      crypto.randomBytes( 24, done );
+    },
+    function( secret, done ) {
+      // Save generated secret
+      ap.aaa_secret = secret.toString('base64');
 
-    // Save generated secret
-    ap.aaa_secret = secret.toString('base64');
+      // Insert into database
+      self.db.insert( ap, { w : 1 }, done );
+    }
+  ], function( err, ap ) {
+    if( err ) {
+      if( err.code == 404 ) return callback( {
+        id:    'aps-add-user_id-invalid',
+        code:  404,
+        title: "User not found or not an operator."
+      } );
 
-    // Insert into database
-    self.db.insert( ap, { w : 1 }, function( err, res ) {
-      if( err ) return callback( {
+      return callback({
         id:    'aps-add-unkown',
         code:  500,
         title: "Unknown server error."
       } );
+    }
 
-      // Decapsulate
-      res = res[0];
+    // Decapsulate
+    ap = ap[0];
 
-      // And rename id field another time
-      res.id = res._id;
-      delete res._id;
+    // And rename id field another time
+    ap.id = ap._id;
+    delete ap._id;
 
-      // Emit event
-      self.emit( 'add', res );
+    // Emit event
+    self.emit( 'add', ap );
 
-      // Callback
-      callback( null, res );
-    } );
+    // Callback
+    callback( null, ap );
   } );
-},
+}
 
 // FUNC: Modifies ap
 // id:  { field1: (STR), field2: (STR), ... }
@@ -320,42 +331,55 @@ ModelAps.prototype.update = function( id, set, callback ) {
     }
   }
 
-  // Build modifier object
-  var modify = { $set: set };
-
-  // Execute update
   var self = this;
-  this.db.findAndModify(
-    q,
-    [ [ '_id', 1 ] ],
-    modify,
-    { w: 1, new: true },
-    function( err, res ) {
-      // Catch all errors
-      if( err ) return callback( {
+  async.waterfall( [
+    function( done ) {
+      if( set.user_id ) {
+        // Ensure stated user exists and is operator
+        users.get( set.user_id, { filter: { operator: true } }, done );
+      } else {
+        // Skip when user_id is not changed
+        done( null, true );
+      }
+    },
+    function( user, done ) {
+      // Insert into database
+      self.db.findAndModify(
+        q, [ [ '_id', 1 ] ], { $set: set }, { w: 1, new: true }, done
+      );
+    }
+  ], function( err, ap ) {
+    if( err ) {
+      if( err.code == 404 ) return callback( {
+        id:    'aps-update-user_id-invalid',
+        code:  404,
+        title: "User not found or not an operator."
+      } );
+
+      return callback({
         id:    'aps-update-unkown',
         code:  500,
         title: "Unknown server error."
       } );
-
-      if( ! res ) return callback( {
-        id:    'aps-not-found',
-        code:  404,
-        title: "AP not found"
-      } );
-
-      // Rename id field
-      res.id = res._id;
-      delete res._id;
-
-      // Emit event
-      self.emit( 'update', set, res );
-
-      // Callback
-      callback( null, res );
     }
-  );
-},
+
+    if( ! ap ) return callback( {
+      id:    'aps-not-found',
+      code:  404,
+      title: "AP not found"
+    } );
+
+    // And rename id field another time
+    ap.id = ap._id;
+    delete ap._id;
+
+    // Emit event
+    self.emit( 'update', set, ap );
+
+    // Callback
+    callback( null, ap );
+  } );
+}
 
 // FUNC: Removes ap
 // id:  { field1: (STR), field2: (STR), ... }
