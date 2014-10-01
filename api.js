@@ -12,6 +12,7 @@ var jsonController = require('./controller/json.js');
 var usersController = require('./controller/users.js');
 var apsController = require('./controller/aps.js');
 var udsController = require('./controller/uds.js');
+var aaasController = require('./controller/aaas.js');
 
 
 
@@ -30,6 +31,7 @@ jsonController( app );
 usersController( app );
 apsController( app );
 udsController( app );
+aaasController( app );
 
 
 

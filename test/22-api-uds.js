@@ -10,7 +10,7 @@ var api = require( '../api.js' );
 var config = require( '../lib/config.js');
 
 
-describe('API - APs', function() {
+describe('API - UDs', function() {
   var id;
   before( function( done ) {
     // Create some users
