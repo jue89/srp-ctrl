@@ -11,6 +11,7 @@ var authController = require('./controller/auth.js');
 var jsonController = require('./controller/json.js');
 var usersController = require('./controller/users.js');
 var apsController = require('./controller/aps.js');
+var udsController = require('./controller/uds.js');
 
 
 
@@ -28,13 +29,15 @@ authController( app );
 jsonController( app );
 usersController( app );
 apsController( app );
+udsController( app );
+
 
 
 // Catch all unhandled request
 app.use( function( err, req, res, next ) {
   if( err ) {
     res.statusCode = 500;
-    res.end('Something went wrong. Check your Syntax.');
+    res.end('Something went wrong. Check your syntax.');
   } else {
     res.statusCode = 404;
     res.end('Not Found');
