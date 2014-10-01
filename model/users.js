@@ -77,7 +77,8 @@ ModelUsers.prototype._checkPreconditions = function( callback ) {
 
 // FUNC: Get user by id
 // obj: {
-//        fields: [ field1, field2, ... ]
+//        fields: [ field1, field2, ... ],
+//        filter: { field1: (STR), field2: (STR) }
 //      }
 ModelUsers.prototype.get = function( id, obj, callback ) {
   // CHECK PRECONDITIONS
@@ -92,6 +93,22 @@ ModelUsers.prototype.get = function( id, obj, callback ) {
     fields[ item ] = 1;
   } );
 
+  // Side conditions
+  q = {
+    _id: id
+  };
+  var f = obj.filter;
+  for( i in obj.filter ) {
+    switch( i ) {
+      case 'email': q['email'] = f.email; break;
+      case 'enabled': q['enabled'] = helper.parseBool(f.enabled); break;
+      case 'confirmed': q['confirmed'] = helper.parseBool(f.confirmed); break;
+      case 'operator': q['roles.operator'] = helper.parseBool(f.operator); break;
+      case 'guest': q['roles.guest'] = helper.parseBool(f.guest); break;
+      case 'admin': q['roles.admin'] = helper.parseBool(f.admin); break;
+    }
+  }
+
   // Query options
   var opts = {
     fields: fields
@@ -99,7 +116,7 @@ ModelUsers.prototype.get = function( id, obj, callback ) {
 
   // REQUEST OBJECT FROM DATABASE
   var self = this;
-  this.db.findOne( { _id: id }, opts, function( err, res ) {
+  this.db.findOne( q, opts, function( err, res ) {
     if( err ) return callback( {
       id:    'users-db-error',
       code:  500,
@@ -298,6 +315,7 @@ ModelUsers.prototype.add = function( obj, callback ) {
 },
 
 // FUNC: Modifies user
+// id:  { field1: (STR), field2: (STR), ... }
 // set: {
 //        password: (STR), <-- Will be hashed
 //        email: (STR),
@@ -313,6 +331,24 @@ ModelUsers.prototype.update = function( id, set, callback ) {
   var v = validate( set, this.schema.update );
   // Not valid -> Examine first error message
   if( ! v.valid ) return this.schemaError.update( v.errors[0], callback );
+
+  // Build query
+  var q = {};
+  if( typeof id == "string" ) {
+    q['_id'] = id;
+  } else {
+    for( i in obj.filter ) {
+      switch( i ) {
+        case 'id': q['_id'] = id.id; break;
+        case 'email': q['email'] = id.email; break;
+        case 'enabled': q['enabled'] = helper.parseBool(id.enabled); break;
+        case 'confirmed': q['confirmed'] = helper.parseBool(id.confirmed); break;
+        case 'operator': q['roles.operator'] = helper.parseBool(id.operator); break;
+        case 'guest': q['roles.guest'] = helper.parseBool(id.guest); break;
+        case 'admin': q['roles.admin'] = helper.parseBool(id.admin); break;
+      }
+    }
+  }
 
   var self = this;
   async.waterfall( [
@@ -344,7 +380,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
 
       // Execute update
       self.db.findAndModify(
-        { _id: id },
+        q,
         [ [ '_id', 1 ] ],
         modify,
         { w: 1, new: true },
@@ -382,9 +418,27 @@ ModelUsers.prototype.remove = function( id, callback ) {
   // CHECK PRECONDITIONS
   if( ! this._checkPreconditions( callback ) ) return;
 
+  // Build query
+  var q = {};
+  if( typeof id == "string" ) {
+    q['_id'] = id;
+  } else {
+    for( i in obj.filter ) {
+      switch( i ) {
+        case 'id': q['_id'] = id.id; break;
+        case 'email': q['email'] = id.email; break;
+        case 'enabled': q['enabled'] = helper.parseBool(id.enabled); break;
+        case 'confirmed': q['confirmed'] = helper.parseBool(id.confirmed); break;
+        case 'operator': q['roles.operator'] = helper.parseBool(id.operator); break;
+        case 'guest': q['roles.guest'] = helper.parseBool(id.guest); break;
+        case 'admin': q['roles.admin'] = helper.parseBool(id.admin); break;
+      }
+    }
+  }
+
   // DELETE QUERY
   var self = this;
-  this.db.remove( { _id: id }, { w: 1 }, function( err, num ) {
+  this.db.remove( q, { w: 1 }, function( err, num ) {
     if( err ) return callback( {
       id:    'users-delete-unkown',
       code:  500,
