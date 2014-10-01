@@ -3,9 +3,7 @@
 ////////////////////////
 
 var url = require( 'url' );
-var async = require( 'async' );
 var helper = require( '../lib/helper.js' );
-var usersModel = require( '../model/users.js' );
 var apsModel = require( '../model/aps.js' );
 var config = require( '../lib/config.js' );
 
@@ -141,7 +139,7 @@ module.exports = function( app ) {
   } );
 
   app.put( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
+    req.requireAuth( ['admin','operator'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
         && req.auth.flags.confirmed
@@ -188,7 +186,7 @@ module.exports = function( app ) {
   } );
 
   app.del( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
+    req.requireAuth( ['admin','operator'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
         && req.auth.flags.confirmed
