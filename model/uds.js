@@ -80,7 +80,7 @@ ModelUds.prototype._checkPreconditions = function( callback ) {
 //      }
 ModelUds.prototype.get = function( id, obj, callback ) {
   // CHECK PRECONDITIONS
-  if( ! this._checkPrecondtions( callback ) ) return;
+  if( ! this._checkPreconditions( callback ) ) return;
 
 
   // PREPARE ALL DATA
