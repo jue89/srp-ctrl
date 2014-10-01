@@ -1,4 +1,3 @@
-var mongo = require( 'mongodb' ).MongoClient;
 var should = require( 'should' );
 var request = require( 'supertest' );
 var users= require( '../model/users.js' );

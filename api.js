@@ -10,6 +10,7 @@ var bodyParser = require( 'body-parser' );
 var authController = require('./controller/auth.js');
 var jsonController = require('./controller/json.js');
 var usersController = require('./controller/users.js');
+var apsController = require('./controller/aps.js');
 
 
 
@@ -26,11 +27,18 @@ app.use( bodyParser.json({ type: 'application/*+json' }) );
 authController( app );
 jsonController( app );
 usersController( app );
+apsController( app );
+
 
 // Catch all unhandled request
-app.use( function( req, res ) {
-  res.statusCode = 404;
-  res.end('Not Found');
+app.use( function( err, req, res, next ) {
+  if( err ) {
+    res.statusCode = 500;
+    res.end('Something went wrong. Check your Syntax.');
+  } else {
+    res.statusCode = 404;
+    res.end('Not Found');
+  }
 } );
 
 
