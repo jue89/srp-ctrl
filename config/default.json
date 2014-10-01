@@ -12,7 +12,9 @@
   "pagination": {
     "users": 50,
     "aps": 50,
-    "uds": 50
+    "uds": 50,
+    "aaas": 50,
+    "sessions": 50
   },
   "defaultRoles": {
     "admin": false,

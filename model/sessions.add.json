@@ -1,0 +1,26 @@
+{
+	"type":"object",
+	"$schema": "http://json-schema.org/draft-03/schema",
+	"id": "http://api.13pm.eu/v1.0/sessions",
+	"required":true,
+  "additionalProperties": false,
+	"properties":{
+		"id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/sessions/id",
+			"required":true
+		},
+		"ud_id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/uds/id",
+			"required":true,
+			"pattern":"^[0-9a-fA-F]{24}$"
+		},
+		"ap_id": {
+			"type":"string",
+			"id": "http://api.13pm.eu/v1.0/ads/id",
+			"required":true,
+			"pattern":"^[0-9a-fA-F]{24}$"
+		}
+	}
+}
