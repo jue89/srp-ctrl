@@ -13,6 +13,7 @@ var usersController = require('./controller/users.js');
 var apsController = require('./controller/aps.js');
 var udsController = require('./controller/uds.js');
 var aaasController = require('./controller/aaas.js');
+var sessionsController = require('./controller/sessions.js');
 
 
 
@@ -24,7 +25,6 @@ var aaasController = require('./controller/aaas.js');
 var app = express();
 app.use( bodyParser.json({ type: 'application/*+json' }) );
 
-
 // Install controller
 authController( app );
 jsonController( app );
@@ -32,8 +32,7 @@ usersController( app );
 apsController( app );
 udsController( app );
 aaasController( app );
-
-
+sessionsController( app );
 
 // Catch all unhandled request
 app.use( function( err, req, res, next ) {
