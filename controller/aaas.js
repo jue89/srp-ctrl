@@ -10,7 +10,7 @@ var config = require( '../lib/config.js' );
 
 module.exports = function( app ) {
 
-  app.get( '/aas', function( req, res ) {
+  app.get( '/aaas', function( req, res ) {
     req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
 
       // Build request

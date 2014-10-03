@@ -21,7 +21,7 @@ function ModelUds() {
   // Connect to collection
   this.db = null;
   var self = this;
-  mongo( 'uds', [ 'user_id', 'mac' ], function( db ){
+  mongo( 'uds', [ 'user_id', [ 'mac', 'user_id' ] ], function( db ){
     // Connected: Save instance and emit event
     self.db = db;
     self.emit( 'ready' );
