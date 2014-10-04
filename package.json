@@ -13,7 +13,8 @@
     "json-schema": "0.2.x",
     "async": "0.9.x",
     "nodemailer": "1.3.x",
-    "nodemailer-smtp-transport": "0.1.x"
+    "nodemailer-smtp-transport": "0.1.x",
+    "smbhash": "0.0.1"
   },
   "devDependencies": {
     "supertest": "0.14.x",
