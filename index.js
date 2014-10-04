@@ -13,4 +13,4 @@ var config = require( './lib/config.js' );
  // REST API           //
 ////////////////////////
 var api = require( './api.js' );
-api.start( config.port );
+api.listen( config.port, '127.0.0.1' );

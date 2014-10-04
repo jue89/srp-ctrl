@@ -22,20 +22,20 @@ var sessionsController = require('./controller/sessions.js');
 ////////////////////////
 
 // Configure app
-var app = express();
-app.use( bodyParser.json({ type: 'application/*+json' }) );
+var api = express.Router();
+api.use( bodyParser.json({ type: 'application/*+json' }) );
 
 // Install controller
-authController( app );
-jsonController( app );
-usersController( app );
-apsController( app );
-udsController( app );
-aaasController( app );
-sessionsController( app );
+authController( api );
+jsonController( api );
+usersController( api );
+apsController( api );
+udsController( api );
+aaasController( api );
+sessionsController( api );
 
 // Catch all unhandled request
-app.use( function( err, req, res, next ) {
+api.use( function( err, req, res, next ) {
   if( err ) {
     res.statusCode = 500;
     res.end('Something went wrong. Check your syntax.');
@@ -51,6 +51,6 @@ app.use( function( err, req, res, next ) {
  // RETURN             //
 ////////////////////////
 
-module.exports = {
-  start: function( port ) { app.listen( port ); }
-}
+var app = express();
+app.use( '/v1.0', api );
+module.exports = app;

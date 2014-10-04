@@ -11,9 +11,9 @@ var sessionsModel = require( '../model/sessions.js' );
 var config = require( '../lib/config.js' );
 
 
-module.exports = function( app ) {
+module.exports = function( api ) {
 
-  app.get( '/sessions', function( req, res ) {
+  api.get( '/sessions', function( req, res ) {
     req.requireAuth( ['admin','operator','guest'], ['confirmed','enabled'], function() {
 
       // Current user is admin?
@@ -94,7 +94,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.post( '/sessions', function( req, res ) {
+  api.post( '/sessions', function( req, res ) {
     req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.sessions ) return res.status(400).endJSON( {
@@ -149,7 +149,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.get( '/sessions/:id', function( req, res ) {
+  api.get( '/sessions/:id', function( req, res ) {
     req.requireAuth( ['admin','operator','guest'], ['confirmed','enabled'], function() {
 
       // Current user is admin?
@@ -212,7 +212,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.put( '/sessions/:id', function( req, res ) {
+  api.put( '/sessions/:id', function( req, res ) {
     req.requireAuth( ['admin'], ['enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body ||

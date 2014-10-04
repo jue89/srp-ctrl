@@ -12,7 +12,7 @@ var config = require( '../lib/config.js');
 before( function( done ) {
   mongo.connect( config.db, function( err, db ){
     db.dropDatabase( );
-    api.start( config.port );
+    api.listen( config.port, '127.0.0.1' );
     done();
   } );
 } );

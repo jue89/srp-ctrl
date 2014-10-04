@@ -1,10 +1,18 @@
-module.exports = function( express ) {
-  // Helper function to set correct type
-  express.response.endJSON = function( obj ) {
-    var pretty = (this.req.query.pretty != null) ? '  ' : null;
+module.exports = function( api ) {
 
-    if( ! pretty ) this.type('application/vnd.api+json');
+  api.use( function( req, res, next ) {
 
-    this.end( JSON.stringify( obj, null, pretty ) );
-  }
+    // Helper function to set correct type
+    res.endJSON = function( obj ) {
+      var pretty = (this.req.query.pretty != null) ? '  ' : null;
+
+      if( ! pretty ) this.type('application/vnd.api+json');
+
+      this.end( JSON.stringify( obj, null, pretty ) );
+    }
+
+    next();
+
+  } );
+
 }

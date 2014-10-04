@@ -8,9 +8,9 @@ var apsModel = require( '../model/aps.js' );
 var config = require( '../lib/config.js' );
 
 
-module.exports = function( app ) {
+module.exports = function( api ) {
 
-  app.get( '/aps', function( req, res ) {
+  api.get( '/aps', function( req, res ) {
     req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
 
       // Current user is admin?
@@ -65,7 +65,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.post( '/aps', function( req, res ) {
+  api.post( '/aps', function( req, res ) {
     req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.aps ) return res.status(400).endJSON( {
@@ -98,7 +98,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.get( '/aps/:id', function( req, res ) {
+  api.get( '/aps/:id', function( req, res ) {
     req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
@@ -138,7 +138,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.put( '/aps/:id', function( req, res ) {
+  api.put( '/aps/:id', function( req, res ) {
     req.requireAuth( ['admin','operator'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
@@ -185,7 +185,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.del( '/aps/:id', function( req, res ) {
+  api.delete( '/aps/:id', function( req, res ) {
     req.requireAuth( ['admin','operator'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin

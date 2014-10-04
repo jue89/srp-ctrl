@@ -8,9 +8,9 @@ var udsModel = require( '../model/uds.js' );
 var config = require( '../lib/config.js' );
 
 
-module.exports = function( app ) {
+module.exports = function( api ) {
 
-  app.get( '/uds', function( req, res ) {
+  api.get( '/uds', function( req, res ) {
     req.requireAuth( ['admin','guest'], ['confirmed','enabled'], function() {
 
       // Current user is admin?
@@ -65,7 +65,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.post( '/uds', function( req, res ) {
+  api.post( '/uds', function( req, res ) {
     req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.uds ) return res.status(400).endJSON( {
@@ -90,7 +90,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.get( '/uds/:id', function( req, res ) {
+  api.get( '/uds/:id', function( req, res ) {
     req.requireAuth( ['admin','guest'], ['confirmed','enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
@@ -130,7 +130,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.put( '/uds/:id', function( req, res ) {
+  api.put( '/uds/:id', function( req, res ) {
     req.requireAuth( ['admin'], ['enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body ||
@@ -163,7 +163,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.del( '/uds/:id', function( req, res ) {
+  api.delete( '/uds/:id', function( req, res ) {
     req.requireAuth( ['admin','guest'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin

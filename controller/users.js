@@ -10,9 +10,9 @@ var mail = require( '../lib/mail.js' );
 var config = require( '../lib/config.js' );
 
 
-module.exports = function( app ) {
+module.exports = function( api ) {
 
-  app.get( '/users', function( req, res ) {
+  api.get( '/users', function( req, res ) {
 
     // User must be administrator
     req.requireAuth( 'admin', ['confirmed','enabled'], function() {
@@ -61,7 +61,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.post( '/users', function( req, res ) {
+  api.post( '/users', function( req, res ) {
     // Catch malformed transmitted bodys
     if( ! req.body || ! req.body.users ) return res.status(400).endJSON( {
       errors: {
@@ -112,7 +112,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.get( '/users/:id', function( req, res ) {
+  api.get( '/users/:id', function( req, res ) {
     req.requireAuth( ['admin','operator','guest'], [], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
@@ -161,7 +161,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.put( '/users/:id', function( req, res ) {
+  api.put( '/users/:id', function( req, res ) {
     req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
@@ -237,7 +237,7 @@ module.exports = function( app ) {
     } );
   } );
 
-  app.del( '/users/:id', function( req, res ) {
+  api.delete( '/users/:id', function( req, res ) {
     req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
       // Current user is admin?
       var adm = req.auth.roles.admin
