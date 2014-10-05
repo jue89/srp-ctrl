@@ -14,6 +14,7 @@ var apsController = require('./controller/aps.js');
 var udsController = require('./controller/uds.js');
 var aaasController = require('./controller/aaas.js');
 var sessionsController = require('./controller/sessions.js');
+var configController = require('./controller/config.js')
 
 
 
@@ -33,6 +34,7 @@ apsController( api );
 udsController( api );
 aaasController( api );
 sessionsController( api );
+configController( api );
 
 // Catch all unhandled request
 api.use( function( err, req, res, next ) {

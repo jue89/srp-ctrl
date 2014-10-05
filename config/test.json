@@ -2,6 +2,11 @@
   "base": "http://localhost:8000/v1.0",
   "port": 8000,
   "db": "mongodb://localhost:27017/test",
+  "mqtt": {
+    "port": 1883,
+    "host": "127.0.0.1"
+  },
+  "aaaNet": "2001:470:7a81:143:",
   "mail": {
     "sendMails": false,
     "transporter": {
