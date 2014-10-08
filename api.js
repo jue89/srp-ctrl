@@ -40,10 +40,19 @@ configController( api );
 api.use( function( err, req, res, next ) {
   if( err ) {
     res.statusCode = 500;
-    res.end('Something went wrong. Check your syntax.');
+    res.endJSON( {
+      id: 'internal-error',
+      code: 500,
+      title: 'Something went wrong. Check your syntax.'
+    } );
+    res.endJSON('');
   } else {
     res.statusCode = 404;
-    res.end('Not Found');
+    res.endJSON( {
+      id: 'not-found',
+      code: 404,
+      title: 'Not Found.'
+    } );
   }
 } );
 

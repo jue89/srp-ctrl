@@ -99,7 +99,11 @@ module.exports = function( api ) {
     res.endAuth = function() {
       this.statusCode = 401;
       this.setHeader('WWW-Authenticate', 'Basic realm="Authorisation Required"');
-      this.end('Unauthorized');
+      this.endJSON( {
+        id:    'access-denied',
+        code:  401,
+        title: "Unathorised."
+      } );
     }
 
     next();
