@@ -388,7 +388,7 @@ ModelUds.prototype.remove = function( id, callback ) {
     } );
 
     // Emit event
-    self.emit( 'delete', id );
+    self.emit( 'remove', id );
 
     callback( null, true );
   } )
