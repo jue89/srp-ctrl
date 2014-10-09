@@ -14,3 +14,9 @@ var config = require( './lib/config.js' );
 ////////////////////////
 var api = require( './api.js' );
 api.listen( config.port, '127.0.0.1' );
+
+
+  ////////////////////////
+ // MQTT               //
+////////////////////////
+var mqtt = require( './mqtt.js' );
