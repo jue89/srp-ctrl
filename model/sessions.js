@@ -188,9 +188,10 @@ ModelSessions.prototype.find = function( obj, callback ) {
   }
 
   // Query options
+  var limit = obj.limit != null ? parseInt( obj.limit ) : config.pagination.sessions;
   var opts = {
-    limit: config.pagination.sessions,
-    skip: config.pagination.sessions * page,
+    limit: limit,
+    skip: limit * page,
     sort: sort,
     fields: fields
   };
@@ -221,7 +222,7 @@ ModelSessions.prototype.find = function( obj, callback ) {
     callback( null, {
       count: res.count,
       page:  page,
-      limit: config.pagination.sessions,
+      limit: limit,
       data:  res.query
     } );
   } );

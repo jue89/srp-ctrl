@@ -102,7 +102,7 @@ module.exports = function( api ) {
       this.endJSON( {
         id:    'access-denied',
         code:  401,
-        title: "Unathorised."
+        title: "Unauthorised."
       } );
     }
 

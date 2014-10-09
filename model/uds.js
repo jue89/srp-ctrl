@@ -187,9 +187,10 @@ ModelUds.prototype.find = function( obj, callback ) {
   }
 
   // Query options
+  var limit = obj.limit != null ? parseInt( obj.limit ) : config.pagination.uds;
   var opts = {
-    limit: config.pagination.uds,
-    skip: config.pagination.uds * page,
+    limit: limit,
+    skip: limit * page,
     sort: sort,
     fields: fields
   };
@@ -220,7 +221,7 @@ ModelUds.prototype.find = function( obj, callback ) {
     callback( null, {
       count: res.count,
       page:  page,
-      limit: config.pagination.uds,
+      limit: limit,
       data:  res.query
     } );
   } );

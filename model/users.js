@@ -195,9 +195,10 @@ ModelUsers.prototype.find = function( obj, callback ) {
   }
 
   // Query options
+  var limit = obj.limit != null ? parseInt( obj.limit ) : config.pagination.users;
   var opts = {
-    limit: config.pagination.users,
-    skip: config.pagination.users * page,
+    limit: limit,
+    skip: limit * page,
     sort: sort,
     fields: fields
   };
@@ -228,7 +229,7 @@ ModelUsers.prototype.find = function( obj, callback ) {
     callback( null, {
       count: res.count,
       page:  page,
-      limit: config.pagination.users,
+      limit: limit,
       data:  res.query
     } );
   } );

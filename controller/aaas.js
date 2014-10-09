@@ -22,6 +22,7 @@ module.exports = function( api ) {
         ['user_id','ipv6_id','created','last_changed','fqdn','public_key'];
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.limit   = req.query.limit ? req.query.limit : null;
 
       // And go ...
       aaasModel.find( q, function( err, aaas ) {

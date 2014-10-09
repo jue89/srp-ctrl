@@ -26,6 +26,7 @@ module.exports = function( api ) {
         ['enabled','confirmed','email','roles','created','last_changed'];
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.limit   = req.query.limit ? req.query.limit : null;
 
       // And go ...
       usersModel.find( q, function( err, users ) {

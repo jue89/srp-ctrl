@@ -30,6 +30,9 @@ module.exports = function( api ) {
 
       // Only admins can request all uds. Otherwise enforce filters
       if( ! adm ) q.filter.user_id = req.auth.id
+      
+      // Admins can change pagination limit
+      if( adm && req.query.limit ) q.limit = req.query.limit;
 
       // And go ...
       udsModel.find( q, function( err, uds ) {

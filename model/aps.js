@@ -143,7 +143,8 @@ ModelAps.prototype.get = function( id, obj, callback ) {
 //        page: (int),
 //        filter: { field1: (STR), field2: (STR) },
 //        fields: [ field1, field2, ... ],
-//        sort: [ -field1, field2, ... ]
+//        sort: [ -field1, field2, ... ],
+//        limit: (INT)
 //      }
 ModelAps.prototype.find = function( obj, callback ) {
   // Check preconditions
@@ -187,9 +188,10 @@ ModelAps.prototype.find = function( obj, callback ) {
   }
 
   // Query options
+  var limit = obj.limit != null ? parseInt( obj.limit ) : config.pagination.aps;
   var opts = {
-    limit: config.pagination.aps,
-    skip: config.pagination.aps * page,
+    limit: limit,
+    skip: limit * page,
     sort: sort,
     fields: fields
   };
@@ -220,7 +222,7 @@ ModelAps.prototype.find = function( obj, callback ) {
     callback( null, {
       count: res.count,
       page:  page,
-      limit: config.pagination.aps,
+      limit: limit,
       data:  res.query
     } );
   } );

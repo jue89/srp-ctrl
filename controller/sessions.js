@@ -34,6 +34,9 @@ module.exports = function( api ) {
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
 
+      // Admins can change pagination limit
+      if( adm && req.query.limit ) q.limit = req.query.limit;
+
       // Require filter by ap_id or ud_id when non-admin
       if( ! adm && ( ! q.filter.ap_id && ! q.filter.ud_id ) ) res.endAuth();
 
