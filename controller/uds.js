@@ -30,7 +30,7 @@ module.exports = function( api ) {
 
       // Only admins can request all uds. Otherwise enforce filters
       if( ! adm ) q.filter.user_id = req.auth.id
-      
+
       // Admins can change pagination limit
       if( adm && req.query.limit ) q.limit = req.query.limit;
 
@@ -106,6 +106,7 @@ module.exports = function( api ) {
         req.query.fields.split(',') :
         ['user_id','mac','created','last_seen','last_ap_id'];
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.filter  = req.query.filter ? req.query.filter : {};
 
       // Non-admins are restricted to their own uds
       if( ! adm ) q.filter = { user_id: req.auth.id };

@@ -131,6 +131,7 @@ module.exports = function( api ) {
         req.query.fields.split(',') :
         ['enabled','confirmed','email','roles','created','last_changed'];
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.filter  = req.query.filter ? req.query.filter : {};
 
       // Only admins can request password and confirmation_key field
       if( ! adm && (

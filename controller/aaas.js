@@ -95,6 +95,7 @@ module.exports = function( api ) {
         req.query.fields.split(',') :
         ['user_id','ipv6_id','created','last_changed','fqdn','public_key'];
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.filter  = req.query.filter ? req.query.filter : {};
 
       // And go ...
       aaasModel.get( req.params.id, q, function( err, aaa ) {

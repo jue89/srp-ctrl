@@ -169,6 +169,7 @@ module.exports = function( api ) {
           'sent_bytes','received_bytes'
         ];
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.filter  = req.query.filter ? req.query.filter : {};
 
       // And go ...
       sessionsModel.get( req.params.id, q, function( err, session ) {

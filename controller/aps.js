@@ -114,6 +114,7 @@ module.exports = function( api ) {
         req.query.fields.split(',') :
         ['user_id','ipv6_id','created','last_seen','public_key'];
       q.include = req.query.include ? req.query.include.split(',') : [];
+      q.filter  = req.query.filter ? req.query.filter : {};
 
       // Non-admins are restricted to their own aps
       if( ! adm ) q.filter = { user_id: req.auth.id };
