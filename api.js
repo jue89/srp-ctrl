@@ -24,11 +24,11 @@ var configController = require('./controller/config.js')
 
 // Configure app
 var api = express.Router();
+authController( api );
+jsonController( api );
 api.use( bodyParser.json({ type: 'application/*+json' }) );
 
 // Install controller
-authController( api );
-jsonController( api );
 usersController( api );
 apsController( api );
 udsController( api );
@@ -39,6 +39,7 @@ configController( api );
 // Catch all unhandled request
 api.use( function( err, req, res, next ) {
   if( err ) {
+    console.error( err );
     res.statusCode = 500;
     res.endJSON( {
       id: 'internal-error',
