@@ -263,7 +263,7 @@ ModelSessions.prototype.add = function( obj, callback ) {
     },
     function( ap, done ) {
       // Ensure stated ud exists
-      uds.get( session.ud_id, {}, done );
+      uds.get( session.ud_id, { filter: { last_ap_id: session.ap_id } }, done );
     },
     function( ud, done ) {
       // Insert into database
