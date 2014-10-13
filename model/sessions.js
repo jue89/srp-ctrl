@@ -250,7 +250,7 @@ ModelSessions.prototype.add = function( obj, callback ) {
     ud_id: obj.ud_id,
     ended: false,
     begin: now,
-    last_seen: null,
+    last_seen: now,
     sent_bytes: 0,
     received_bytes: 0
   }
@@ -315,7 +315,7 @@ ModelSessions.prototype.update = function( id, set, callback ) {
   if( ! v.valid ) return this.schemaError.update( v.errors[0], callback );
 
   // Set last_seen
-  set.last_changed = new Date();
+  set.last_seen = new Date();
 
   // Build query
   var q = {};
