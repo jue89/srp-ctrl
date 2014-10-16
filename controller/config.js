@@ -2,27 +2,38 @@
  // REQUIREMENTS       //
 ////////////////////////
 
-var url = require( 'url' );
 var helper = require( '../lib/helper.js' );
-var aaasModel = require( '../model/aaas.js' );
-var config = require( '../lib/config.js' );
-var aaaTemplate = require( '../template/aaaConfig.js')
 
 
 module.exports = function( api ) {
 
-  api.get( '/aaas/:id/config', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+  [ {
+    path: 'aaas',
+    tpl: require( '../template/aaaConfig.js'),
+    roles: ['admin']
+  } ].forEach( function( endpoint ){
+    api.get( '/' + endpoint.path + '/:id/config', function( req, res ) {
+      req.requireAuth( endpoint.roles, ['confirmed','enabled'], function() {
+        endpoint.tpl( req.params.id, function( err, config ) {
 
-      // Build request
-      var q = { fields: ['ipv6_id','fqdn'] }
+          // Catch errors
+          if( err ) return res.status(err.code).endJSON( { errors: err } );
 
-      // And go ...
-      aaasModel.get( req.params.id, q, function( err, aaa ) {
-        // Catch errors
-        if( err ) return res.status(err.code).endJSON( { errors: err } );
+          // Calcutlate ETAG
+          var etag = helper.objectToEtag( config );
 
-        res.endJSON( { config: aaaTemplate( aaa ) } );
+          // Set header
+          res.setHeader( 'ETag', etag );
+
+          // Check if etag matches --> Report 304
+          if( req.headers['if-none-match'] == etag ) {
+            return res.status( 304 ).end();
+          }
+
+          // When no match --> send result
+          res.endJSON( { config: config } );
+
+        } );
       } );
     } );
   } );
