@@ -11,6 +11,10 @@ module.exports = function( api ) {
     path: 'aaas',
     tpl: require( '../template/aaaConfig.js'),
     roles: ['admin']
+  }, {
+    path: 'aps',
+    tpl: require( '../template/apConfig.js'),
+    roles: ['operator']
   } ].forEach( function( endpoint ){
     api.get( '/' + endpoint.path + '/:id/config', function( req, res ) {
       req.requireAuth( endpoint.roles, ['confirmed','enabled'], function() {
