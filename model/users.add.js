@@ -48,7 +48,7 @@ module.exports = function( err, callback ) {
       } );
 
     case 'roles':
-    case 'roles.admin':
+    case 'roles.vno':
     case 'roles.guest':
     case 'roles.operator':
       if( m == "is missing and it is required" ) return callback( {

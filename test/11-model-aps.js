@@ -15,7 +15,7 @@ describe( 'model/aps.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'apbob',
@@ -23,7 +23,7 @@ describe( 'model/aps.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
     ], done );
   } );

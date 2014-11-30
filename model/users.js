@@ -105,7 +105,7 @@ ModelUsers.prototype.get = function( id, obj, callback ) {
       case 'confirmed': q['confirmed'] = helper.parseBool(f.confirmed); break;
       case 'operator': q['roles.operator'] = helper.parseBool(f.operator); break;
       case 'guest': q['roles.guest'] = helper.parseBool(f.guest); break;
-      case 'admin': q['roles.admin'] = helper.parseBool(f.admin); break;
+      case 'vno': q['roles.vno'] = helper.parseBool(f.vno); break;
     }
   }
 
@@ -190,7 +190,7 @@ ModelUsers.prototype.find = function( obj, callback ) {
       case 'confirmed': q['confirmed'] = helper.parseBool(f.confirmed); break;
       case 'operator': q['roles.operator'] = helper.parseBool(f.operator); break;
       case 'guest': q['roles.guest'] = helper.parseBool(f.guest); break;
-      case 'admin': q['roles.admin'] = helper.parseBool(f.admin); break;
+      case 'vno': q['roles.vno'] = helper.parseBool(f.vno); break;
     }
   }
 
@@ -242,7 +242,7 @@ ModelUsers.prototype.find = function( obj, callback ) {
 //        email: (STR),
 //        enabled: (BOOL),
 //        confirmed: (BOOL),
-//        roles: { operator: (BOOL), guest: (BOOL), admin: (BOOL) }
+//        roles: { operator: (BOOL), guest: (BOOL), vno: (BOOL) }
 //      }
 ModelUsers.prototype.add = function( obj, callback ) {
   // CHECK PRECONDITIONS
@@ -322,7 +322,7 @@ ModelUsers.prototype.add = function( obj, callback ) {
 //        email: (STR),
 //        enabled: (BOOL),
 //        confirmed: (BOOL),
-//        roles: { operator: (BOOL), guest: (BOOL), admin: (BOOL) }
+//        roles: { operator: (BOOL), guest: (BOOL), vno: (BOOL) }
 //      }
 ModelUsers.prototype.update = function( id, set, callback ) {
   // CHECK PRECONDITIONS
@@ -346,7 +346,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
         case 'confirmed': q['confirmed'] = helper.parseBool(id.confirmed); break;
         case 'operator': q['roles.operator'] = helper.parseBool(id.operator); break;
         case 'guest': q['roles.guest'] = helper.parseBool(id.guest); break;
-        case 'admin': q['roles.admin'] = helper.parseBool(id.admin); break;
+        case 'vno': q['roles.vno'] = helper.parseBool(id.vno); break;
       }
     }
   }
@@ -364,7 +364,7 @@ ModelUsers.prototype.update = function( id, set, callback ) {
 
       // When roles has been re-defined, transform object for mongodb
       if( set.roles ) {
-        set["roles.admin"] = set.roles.admin;
+        set["roles.vno"] = set.roles.vno;
         set["roles.operator"] = set.roles.operator;
         set["roles.guest"] = set.roles.guest;
         delete set.roles;
@@ -432,7 +432,7 @@ ModelUsers.prototype.remove = function( id, callback ) {
         case 'confirmed': q['confirmed'] = helper.parseBool(id.confirmed); break;
         case 'operator': q['roles.operator'] = helper.parseBool(id.operator); break;
         case 'guest': q['roles.guest'] = helper.parseBool(id.guest); break;
-        case 'admin': q['roles.admin'] = helper.parseBool(id.admin); break;
+        case 'vno': q['roles.vno'] = helper.parseBool(id.vno); break;
       }
     }
   }

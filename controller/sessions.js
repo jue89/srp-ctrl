@@ -14,10 +14,10 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/sessions', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','operator','guest'], ['confirmed','enabled'], function() {
 
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+      // Current user is VNO?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -34,17 +34,17 @@ module.exports = function( api ) {
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
 
-      // Admins can change pagination limit
-      if( adm && req.query.limit ) q.limit = req.query.limit;
+      // VNOs can change pagination limit
+      if( vno && req.query.limit ) q.limit = req.query.limit;
 
-      // Require filter by ap_id or ud_id when non-admin
-      if( ! adm && ( ! q.filter.ap_id && ! q.filter.ud_id ) ) res.endAuth();
+      // Require filter by ap_id or ud_id when non-vno
+      if( ! vno && ( ! q.filter.ap_id && ! q.filter.ud_id ) ) res.endAuth();
 
       // Check ap_id and user + Check ud_id and user --> fetch session
       async.waterfall( [
         function( done ) {
           // Check if stated ap belongs to user
-          if( ! adm && q.filter.ap_id ) apsModel.get(
+          if( ! vno && q.filter.ap_id ) apsModel.get(
             q.filter.ap_id,
             { filter: { user_id: req.auth.id } },
             done
@@ -53,7 +53,7 @@ module.exports = function( api ) {
         },
         function( ap, done ) {
           // Check if stated ud belongs to user
-          if( ! adm && q.filter.ud_id ) udsModel.get(
+          if( ! vno && q.filter.ud_id ) udsModel.get(
             q.filter.ud_id,
             { filter: { user_id: req.auth.id } },
             done
@@ -98,7 +98,7 @@ module.exports = function( api ) {
   } );
 
   api.post( '/sessions', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.sessions ) return res.status(400).endJSON( {
         errors: {
@@ -153,10 +153,10 @@ module.exports = function( api ) {
   } );
 
   api.get( '/sessions/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','operator','guest'], ['confirmed','enabled'], function() {
 
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+      // Current user is VNO?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -189,8 +189,8 @@ module.exports = function( api ) {
         // Sessions
         ret.sessions = session;
 
-        // Admins are allowed to see every session
-        if( adm ) return res.endJSON( ret );
+        // VNOs are allowed to see every session
+        if( vno ) return res.endJSON( ret );
 
         // Others must be involved in a session (guest or operator)
         var permited = false;
@@ -217,7 +217,7 @@ module.exports = function( api ) {
   } );
 
   api.put( '/sessions/:id', function( req, res ) {
-    req.requireAuth( ['admin'], ['enabled'], function() {
+    req.requireAuth( ['vno'], ['enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body ||
         ! req.body.sessions ||

@@ -17,7 +17,7 @@ describe( 'model/uds.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'udbob',
@@ -25,7 +25,7 @@ describe( 'model/uds.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: false, guest: true }
+        roles: { vno: false, operator: false, guest: true }
       }, done ); }
     ], function( err, res ) {
       aps.add( {

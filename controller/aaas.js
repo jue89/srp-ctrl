@@ -11,7 +11,7 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/aaas', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno'], ['confirmed','enabled'], function() {
 
       // Build request
       var q = {}
@@ -59,7 +59,7 @@ module.exports = function( api ) {
   } );
 
   api.post( '/aaas', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.aaas ) return res.status(400).endJSON( {
         errors: {
@@ -87,7 +87,7 @@ module.exports = function( api ) {
   } );
 
   api.get( '/aaas/:id', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno'], ['confirmed','enabled'], function() {
 
       // Build request
       var q = {}
@@ -121,7 +121,7 @@ module.exports = function( api ) {
   } );
 
   api.put( '/aaas/:id', function( req, res ) {
-    req.requireAuth( ['admin'], ['enabled'], function() {
+    req.requireAuth( ['vno'], ['enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body ||
         ! req.body.aaas ||
@@ -154,7 +154,7 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/aaas/:id', function( req, res ) {
-    req.requireAuth( ['admin'], ['enabled'], function() {
+    req.requireAuth( ['vno'], ['enabled'], function() {
       var q = { id: req.params.id };
 
       aaasModel.remove( q, function( err ) {

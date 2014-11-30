@@ -11,10 +11,10 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/uds', function( req, res ) {
-    req.requireAuth( ['admin','guest'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','guest'], ['confirmed','enabled'], function() {
 
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -28,10 +28,10 @@ module.exports = function( api ) {
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
 
-      // Only admins can request all uds. Otherwise enforce filters
+      // Only VNOs can request all uds. Otherwise enforce filters
       if( ! adm ) q.filter.user_id = req.auth.id
 
-      // Admins can change pagination limit
+      // VNOs can change pagination limit
       if( adm && req.query.limit ) q.limit = req.query.limit;
 
       // And go ...
@@ -69,7 +69,7 @@ module.exports = function( api ) {
   } );
 
   api.post( '/uds', function( req, res ) {
-    req.requireAuth( ['admin'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.uds ) return res.status(400).endJSON( {
         errors: {
@@ -94,9 +94,9 @@ module.exports = function( api ) {
   } );
 
   api.get( '/uds/:id', function( req, res ) {
-    req.requireAuth( ['admin','guest'], ['confirmed','enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','guest'], ['confirmed','enabled'], function() {
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -108,7 +108,7 @@ module.exports = function( api ) {
       q.include = req.query.include ? req.query.include.split(',') : [];
       q.filter  = req.query.filter ? req.query.filter : {};
 
-      // Non-admins are restricted to their own uds
+      // Non-vnos are restricted to their own uds
       if( ! adm ) q.filter = { user_id: req.auth.id };
 
       // And go ...
@@ -135,7 +135,7 @@ module.exports = function( api ) {
   } );
 
   api.put( '/uds/:id', function( req, res ) {
-    req.requireAuth( ['admin'], ['enabled'], function() {
+    req.requireAuth( ['vno'], ['enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body ||
         ! req.body.uds ||
@@ -168,13 +168,13 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/uds/:id', function( req, res ) {
-    req.requireAuth( ['admin','guest'], ['enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','guest'], ['enabled'], function() {
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
-      // Only admins can delete arbitrary accounts. Other just their own.
+      // Only VNOs can delete arbitrary accounts. Other just their own.
       var q = { id: req.params.id };
       if( ! adm ) q.user_id = req.auth.id;
 

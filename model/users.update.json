@@ -33,9 +33,9 @@
 			"required":false,
       "additionalProperties": false,
 			"properties":{
-				"admin": {
+				"vno": {
 					"type":"boolean",
-					"id": "http://api.13pm.eu/v1.0/users/roles/admin",
+					"id": "http://api.13pm.eu/v1.0/users/roles/vno",
 					"required":true
 				},
 				"guest": {

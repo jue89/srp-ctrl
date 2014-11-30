@@ -19,7 +19,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'emma',
@@ -27,7 +27,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'unconfirmed',
@@ -35,7 +35,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: false, // <--
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'disabled',
@@ -43,7 +43,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: false, // <--
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'god',
@@ -51,7 +51,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: true, operator: false, guest: false } // <--
+        roles: { vno: true, operator: false, guest: false } // <--
       }, done ); }
     ], done );
   } );
@@ -77,7 +77,7 @@ describe('API - APs', function() {
       .expect( 401, done );
   } );
 
-  it('should deny creating aps for other users when non-admin', function( done ) {
+  it('should deny creating aps for other users when non-vno', function( done ) {
     request(config.base)
       .post('/aps')
       .type('application/vnd.api+json')
@@ -142,7 +142,7 @@ describe('API - APs', function() {
       } );
   } );
 
-  it('should deny changing ap owner when non-admin', function( done ) {
+  it('should deny changing ap owner when non-vno', function( done ) {
     request(config.base)
       .put('/aps/' + id)
       .type('application/vnd.api+json')
@@ -186,7 +186,7 @@ describe('API - APs', function() {
       .expect( 404, done );
   } );
 
-  it('should just return own aps when non-admin', function( done ) {
+  it('should just return own aps when non-vno', function( done ) {
     request(config.base)
       .get('/aps')
       .auth('emma', 'password')

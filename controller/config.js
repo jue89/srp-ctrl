@@ -10,7 +10,7 @@ module.exports = function( api ) {
   [ {
     path: 'aaas',
     tpl: require( '../template/aaaConfig.js'),
-    roles: ['admin']
+    roles: ['vno']
   }, {
     path: 'aps',
     tpl: require( '../template/apConfig.js'),

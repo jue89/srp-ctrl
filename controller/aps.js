@@ -11,10 +11,10 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/aps', function( req, res ) {
-    req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
 
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+      // Current user is VNO?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -28,11 +28,11 @@ module.exports = function( api ) {
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
 
-      // Only admins can request all aps. Otherwise enforce filters
-      if( ! adm ) q.filter.user_id = req.auth.id
+      // Only VNOs can request all aps. Otherwise enforce filters
+      if( ! vno ) q.filter.user_id = req.auth.id
 
-      // Admins can change pagination limit
-      if( adm && req.query.limit ) q.limit = req.query.limit;
+      // VNOs can change pagination limit
+      if( vno && req.query.limit ) q.limit = req.query.limit;
 
       // And go ...
       apsModel.find( q, function( err, aps ) {
@@ -69,7 +69,7 @@ module.exports = function( api ) {
   } );
 
   api.post( '/aps', function( req, res ) {
-    req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.aps ) return res.status(400).endJSON( {
         errors: {
@@ -81,12 +81,12 @@ module.exports = function( api ) {
 
       // Users ID
       var b = req.body.aps;
-      var adm = req.auth.roles.admin
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
       if( b.user_id == null ) b.user_id = req.auth.id;
-      // When not admin reject creating APs for others
-      if( ! adm && b.user_id != req.auth.id ) return res.endAuth();
+      // When not VNO reject creating APs for others
+      if( ! vno && b.user_id != req.auth.id ) return res.endAuth();
 
       apsModel.add( b, function( err, ap ) {
         // Catch errors
@@ -102,9 +102,9 @@ module.exports = function( api ) {
   } );
 
   api.get( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator'], ['confirmed','enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
+      // Current user is vno?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -116,8 +116,8 @@ module.exports = function( api ) {
       q.include = req.query.include ? req.query.include.split(',') : [];
       q.filter  = req.query.filter ? req.query.filter : {};
 
-      // Non-admins are restricted to their own aps
-      if( ! adm ) q.filter = { user_id: req.auth.id };
+      // Non-VNOs are restricted to their own aps
+      if( ! vno ) q.filter = { user_id: req.auth.id };
 
       // And go ...
       apsModel.get( req.params.id, q, function( err, ap ) {
@@ -143,9 +143,9 @@ module.exports = function( api ) {
   } );
 
   api.put( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator'], ['enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator'], ['enabled'], function() {
+      // Current user is VNO?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
@@ -164,16 +164,16 @@ module.exports = function( api ) {
 
       // Prepare changes object and id
       var q = { id: req.params.id };
-      // Non-admins can just update their own aps
-      if( ! adm ) q.user_id = req.auth.id;
+      // Non-VNOs can just update their own aps
+      if( ! vno ) q.user_id = req.auth.id;
 
       // Prepare changes
       var changes = req.body.aps;
       delete changes.id;
 
-      // When not admin reject changing AP owner
+      // When not VNO reject changing AP owner
       if(
-        ! adm &&
+        ! vno &&
         changes.user_id &&
         changes.user_id != req.auth.id
       ) return res.endAuth();
@@ -190,15 +190,15 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator'], ['enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator'], ['enabled'], function() {
+      // Current user is VNO?
+      var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
-      // Only admins can delete arbitrary accounts. Other just their own.
+      // Only VNOs can delete arbitrary accounts. Other just their own.
       var q = { id: req.params.id };
-      if( ! adm ) q.user_id = req.auth.id;
+      if( ! vno ) q.user_id = req.auth.id;
 
       apsModel.remove( q, function( err ) {
         // Error has occured

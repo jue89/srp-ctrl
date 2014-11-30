@@ -257,8 +257,8 @@ ModelAaas.prototype.add = function( obj, callback ) {
   var self = this;
   async.waterfall( [
     function( done ) {
-      // Ensure stated user exists and is administrator
-      users.get( aaa.user_id, { filter: { admin: true } }, done );
+      // Ensure stated user exists and is VNO
+      users.get( aaa.user_id, { filter: { vno: true } }, done );
     },
     function( user, done ) {
       // Insert into database
@@ -331,7 +331,7 @@ ModelAaas.prototype.update = function( id, set, callback ) {
     function( done ) {
       if( set.user_id ) {
         // Ensure stated user exists and is operator
-        users.get( set.user_id, { filter: { admin: true } }, done );
+        users.get( set.user_id, { filter: { vno: true } }, done );
       } else {
         // Skip when user_id is not changed
         done( null, true );
@@ -348,7 +348,7 @@ ModelAaas.prototype.update = function( id, set, callback ) {
       if( err.code == 404 ) return callback( {
         id:    'aaas-update-user_id-invalid',
         code:  404,
-        title: "User not found or not an administrator."
+        title: "User not found or not a VNO."
       } );
 
       return callback({

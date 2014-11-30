@@ -15,7 +15,7 @@ describe( 'model/aaas.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: true, operator: false, guest: false }
+        roles: { vno: true, operator: false, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'gertrude',
@@ -23,7 +23,7 @@ describe( 'model/aaas.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: false, guest: true }
+        roles: { vno: false, operator: false, guest: true }
       }, done ); }
     ], done );
   } );
@@ -69,7 +69,7 @@ describe( 'model/aaas.js', function() {
     } );
   } );
 
-  it( 'should reject creating AAA with non-admin user', function(done) {
+  it( 'should reject creating AAA with non-vno user', function(done) {
     aaas.add( {
       user_id: 'gertrude',
       fqdn: 'aaa.example.com',

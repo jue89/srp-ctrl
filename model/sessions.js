@@ -346,7 +346,7 @@ ModelSessions.prototype.update = function( id, set, callback ) {
         if( err.code == 404 ) return callback( {
           id:    'sessions-update-user_id-invalid',
           code:  404,
-          title: "User not found or not an administrator."
+          title: "User not found or not a VNO."
         } );
 
         return callback({

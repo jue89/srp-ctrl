@@ -14,7 +14,7 @@ module.exports = function( api ) {
       // Default: Not authenticated
       this.auth = {
         id: null,
-        roles: { admin: false, guest: false, operator: false },
+        roles: { vno: false, guest: false, operator: false },
         flags: { confirmed: false, enabled: false }
       };
 

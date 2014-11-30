@@ -26,7 +26,7 @@ module.exports = function( err, callback ) {
       } );
 
     case 'roles':
-    case 'roles.admin':
+    case 'roles.vno':
     case 'roles.guest':
     case 'roles.operator':
       return callback( {

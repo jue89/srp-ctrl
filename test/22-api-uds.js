@@ -21,7 +21,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: true, guest: false }
+        roles: { vno: false, operator: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'hillary',
@@ -29,7 +29,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: false, guest: true }
+        roles: { vno: false, operator: false, guest: true }
       }, done ); },
       function( done ) { users.add( {
         id: 'buddah',
@@ -37,7 +37,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: true, operator: false, guest: false }
+        roles: { vno: true, operator: false, guest: false }
       }, done ); },
       function( done ) { aps.add( {
         user_id: 'frank',
@@ -63,7 +63,7 @@ describe('API - UDs', function() {
       .expect( 404, done );
   } );
 
-  it('should deny creating uds for non-admin', function( done ) {
+  it('should deny creating uds for non-vno', function( done ) {
     request(config.base)
       .post('/uds')
       .type('application/vnd.api+json')
@@ -124,7 +124,7 @@ describe('API - UDs', function() {
       } );
   } );
 
-  it('should deny getting uds of others for non-admins', function( done ) {
+  it('should deny getting uds of others for non-vnos', function( done ) {
     request(config.base)
       .get('/uds/' + ud_id)
       .auth('frank', 'password')

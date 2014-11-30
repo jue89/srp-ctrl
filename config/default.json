@@ -23,7 +23,7 @@
     "sessions": 50
   },
   "defaultRoles": {
-    "admin": false,
+    "vno": false,
     "operator": true,
     "guest": true
   }

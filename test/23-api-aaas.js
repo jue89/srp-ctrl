@@ -21,7 +21,7 @@ describe('API - AAAs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: true, operator: false, guest: false }
+        roles: { vno: true, operator: false, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'jack',
@@ -29,12 +29,12 @@ describe('API - AAAs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { admin: false, operator: false, guest: true }
+        roles: { vno: false, operator: false, guest: true }
       }, done ); }
     ], done );
   } );
 
-  it('should deny creating aaas for non-admins', function( done ) {
+  it('should deny creating aaas for non-vnos', function( done ) {
     request(config.base)
       .post('/aaas')
       .type('application/vnd.api+json')

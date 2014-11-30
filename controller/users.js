@@ -14,8 +14,8 @@ module.exports = function( api ) {
 
   api.get( '/users', function( req, res ) {
 
-    // User must be administrator
-    req.requireAuth( 'admin', ['confirmed','enabled'], function() {
+    // User must be VNO
+    req.requireAuth( 'vno', ['confirmed','enabled'], function() {
 
       // Build request
       var q = {}
@@ -74,9 +74,9 @@ module.exports = function( api ) {
 
     req.getAuth( function( auth ) {
 
-      // When no administrator, set or overwrite some fields
+      // When no VNO, set or overwrite some fields
       var b = req.body.users;
-      var adm = auth.roles.admin && auth.flags.confirmed && auth.flags.enabled;
+      var adm = auth.roles.vno && auth.flags.confirmed && auth.flags.enabled;
       if( ! adm || b.enabled == null ) b.enabled = true;
       if( ! adm || b.confirmed == null ) b.confirmed = false;
       if( ! adm || b.roles == null ) b.roles = config.defaultRoles;
@@ -114,13 +114,13 @@ module.exports = function( api ) {
   } );
 
   api.get( '/users/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], [], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator','guest'], [], function() {
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
-      // Only admins can watch arbitrary accounts. Other just their own.
+      // Only VNOs can watch arbitrary accounts. Other just their own.
       if( ! adm && req.params.id != req.auth.id ) {
         return res.endAuth();
       }
@@ -133,7 +133,7 @@ module.exports = function( api ) {
       q.include = req.query.include ? req.query.include.split(',') : [];
       q.filter  = req.query.filter ? req.query.filter : {};
 
-      // Only admins can request password and confirmation_key field
+      // Only VNOs can request password and confirmation_key field
       if( ! adm && (
         q.fields.indexOf( 'password' ) != -1 ||
         q.fields.indexOf( 'confirmation_key' ) != -1
@@ -164,13 +164,13 @@ module.exports = function( api ) {
   } );
 
   api.put( '/users/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator','guest'], ['enabled'], function() {
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
-      // Only admins can modify arbitrary accounts. Other just their own.
+      // Only VNOs can modify arbitrary accounts. Other just their own.
       if( ! adm && req.params.id != req.auth.id ) {
         return res.endAuth();
       }
@@ -195,7 +195,7 @@ module.exports = function( api ) {
 
       async.waterfall( [
         function( cb ) {
-          // Prevent some fields from modification by non-admins
+          // Prevent some fields from modification by non-VNOs
           if( ! adm ) {
             if( changes.roles != null ) delete changes.roles;
             if( changes.enabled != null ) delete changes.enabled;
@@ -206,7 +206,7 @@ module.exports = function( api ) {
               cb( null, true );
             }
           } else {
-            // When admin --> bypass
+            // When VNO --> bypass
             cb( null, true );
           }
         },
@@ -240,13 +240,13 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/users/:id', function( req, res ) {
-    req.requireAuth( ['admin','operator','guest'], ['enabled'], function() {
-      // Current user is admin?
-      var adm = req.auth.roles.admin
+    req.requireAuth( ['vno','operator','guest'], ['enabled'], function() {
+      // Current user is VNO?
+      var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
         && req.auth.flags.enabled;
 
-      // Only admins can delete arbitrary accounts. Other just their own.
+      // Only VNOs can delete arbitrary accounts. Other just their own.
       if( ! adm && req.params.id != req.auth.id ) {
         return res.endAuth();
       }

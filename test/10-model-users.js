@@ -31,7 +31,7 @@ describe( 'model/users.js', function() {
       id: 'bob',
       password: 'password',
       email: 'bob@ikt.uni-hannover.de',
-      roles: { guest: true, operator: true, admin: true }
+      roles: { guest: true, operator: true, vno: true }
     }, done );
   } );
 
@@ -41,7 +41,7 @@ describe( 'model/users.js', function() {
       id: 'bob',
       password: 'password',
       email: 'bob@ikt.uni-hannover.de',
-      roles: { guest: true, operator: true, admin: true }
+      roles: { guest: true, operator: true, vno: true }
     }, function( err, res ){
       if( err && err.code == 409 ) return done();
       throw new Error();
@@ -53,7 +53,7 @@ describe( 'model/users.js', function() {
       id: 'alice',
       password: 'password',
       email: 'alice@ikt.uni-hannover.de',
-      roles: { guest: true, operator: true, admin: true }
+      roles: { guest: true, operator: true, vno: true }
     }, done );
   } );
 
