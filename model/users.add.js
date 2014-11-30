@@ -50,7 +50,7 @@ module.exports = function( err, callback ) {
     case 'roles':
     case 'roles.vno':
     case 'roles.guest':
-    case 'roles.operator':
+    case 'roles.sharer':
       if( m == "is missing and it is required" ) return callback( {
         id:    'users-add-roles-missing',
         code:  409,

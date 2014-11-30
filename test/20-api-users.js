@@ -15,7 +15,7 @@ describe('API - Users', function() {
       email: 'test@example.com',
       enabled: true,
       confirmed: true,
-      roles: { vno: true, operator: false, guest: false }
+      roles: { vno: true, sharer: false, guest: false }
     }, done );
   } );
 
@@ -29,7 +29,7 @@ describe('API - Users', function() {
         email: 'test@example.com',
         enabled: false,
         confirmed: true,
-        roles: { vno: true, operator: true, guest: true} } } ) )
+        roles: { vno: true, sharer: true, guest: true} } } ) )
       .expect( 201 )
       .expect( 'Location', config.base + '/users/alice' )
       .expect( 'Content-Type', 'application/vnd.api+json' )
@@ -41,7 +41,7 @@ describe('API - Users', function() {
         u.enabled.should.equal(true);
         u.confirmed.should.equal(false);
         u.roles.vno.should.equal(false);
-        u.roles.operator.should.equal(true);
+        u.roles.sharer.should.equal(true);
         u.roles.guest.should.equal(true);
         done();
       } );
@@ -57,7 +57,7 @@ describe('API - Users', function() {
         email: 'test@example.com',
         enabled: false,
         confirmed: true,
-        roles: { vno: true, operator: true, guest: true} } } ) )
+        roles: { vno: true, sharer: true, guest: true} } } ) )
       .expect( 409, done );
   } );
 
@@ -72,7 +72,7 @@ describe('API - Users', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: true, operator: true, guest: true} } } ) )
+        roles: { vno: true, sharer: true, guest: true} } } ) )
       .expect( 201 )
       .expect( 'Location', config.base + '/users/charlie' )
       .expect( 'Content-Type', 'application/vnd.api+json' )
@@ -84,7 +84,7 @@ describe('API - Users', function() {
         u.enabled.should.equal(true);
         u.confirmed.should.equal(true);
         u.roles.vno.should.equal(true);
-        u.roles.operator.should.equal(true);
+        u.roles.sharer.should.equal(true);
         u.roles.guest.should.equal(true);
         done();
       } );

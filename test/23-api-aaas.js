@@ -21,7 +21,7 @@ describe('API - AAAs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: true, operator: false, guest: false }
+        roles: { vno: true, sharer: false, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'jack',
@@ -29,7 +29,7 @@ describe('API - AAAs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: false, guest: true }
+        roles: { vno: false, sharer: false, guest: true }
       }, done ); }
     ], done );
   } );

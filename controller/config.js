@@ -14,7 +14,7 @@ module.exports = function( api ) {
   }, {
     path: 'aps',
     tpl: require( '../template/apConfig.js'),
-    roles: ['operator']
+    roles: ['sharer']
   } ].forEach( function( endpoint ){
     api.get( '/' + endpoint.path + '/:id/config', function( req, res ) {
       req.requireAuth( endpoint.roles, ['confirmed','enabled'], function() {

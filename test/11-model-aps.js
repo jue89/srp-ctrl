@@ -15,7 +15,7 @@ describe( 'model/aps.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'apbob',
@@ -23,7 +23,7 @@ describe( 'model/aps.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
     ], done );
   } );
@@ -74,7 +74,7 @@ describe( 'model/aps.js', function() {
     } );
   } );
 
-  it( 'should change operator', function(done) {
+  it( 'should change sharer', function(done) {
     aps.update( id, {
       user_id: 'apalice'
     }, function( err, res ) {

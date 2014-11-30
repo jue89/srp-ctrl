@@ -114,7 +114,7 @@ module.exports = function( api ) {
   } );
 
   api.get( '/users/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator','guest'], [], function() {
+    req.requireAuth( ['vno','sharer','guest'], [], function() {
       // Current user is VNO?
       var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
@@ -164,7 +164,7 @@ module.exports = function( api ) {
   } );
 
   api.put( '/users/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator','guest'], ['enabled'], function() {
+    req.requireAuth( ['vno','sharer','guest'], ['enabled'], function() {
       // Current user is VNO?
       var adm = req.auth.roles.vno
         && req.auth.flags.confirmed
@@ -240,7 +240,7 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/users/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator','guest'], ['enabled'], function() {
+    req.requireAuth( ['vno','sharer','guest'], ['enabled'], function() {
       // Current user is VNO?
       var adm = req.auth.roles.vno
         && req.auth.flags.confirmed

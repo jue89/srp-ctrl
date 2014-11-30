@@ -28,7 +28,7 @@ module.exports = function( err, callback ) {
     case 'roles':
     case 'roles.vno':
     case 'roles.guest':
-    case 'roles.operator':
+    case 'roles.sharer':
       return callback( {
         id:    'users-update-roles-malformed',
         code:  409,

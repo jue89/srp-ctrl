@@ -21,7 +21,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'hillary',
@@ -29,7 +29,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: false, guest: true }
+        roles: { vno: false, sharer: false, guest: true }
       }, done ); },
       function( done ) { users.add( {
         id: 'buddah',
@@ -37,7 +37,7 @@ describe('API - UDs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: true, operator: false, guest: false }
+        roles: { vno: true, sharer: false, guest: false }
       }, done ); },
       function( done ) { aps.add( {
         user_id: 'frank',

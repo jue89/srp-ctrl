@@ -257,8 +257,8 @@ ModelAps.prototype.add = function( obj, callback ) {
   var self = this;
   async.waterfall( [
     function( done ) {
-      // Ensure stated user exists and is operator
-      users.get( ap.user_id, { filter: { operator: true } }, done );
+      // Ensure stated user exists and is sharer
+      users.get( ap.user_id, { filter: { sharer: true } }, done );
     },
     function( user, done ) {
       // Generate secret
@@ -276,7 +276,7 @@ ModelAps.prototype.add = function( obj, callback ) {
       if( err.code == 404 ) return callback( {
         id:    'aps-add-user_id-invalid',
         code:  404,
-        title: "User not found or not an operator."
+        title: "User not found or not an sharer."
       } );
 
       return callback({
@@ -337,8 +337,8 @@ ModelAps.prototype.update = function( id, set, callback ) {
   async.waterfall( [
     function( done ) {
       if( set.user_id ) {
-        // Ensure stated user exists and is operator
-        users.get( set.user_id, { filter: { operator: true } }, done );
+        // Ensure stated user exists and is sharer
+        users.get( set.user_id, { filter: { sharer: true } }, done );
       } else {
         // Skip when user_id is not changed
         done( null, true );
@@ -355,7 +355,7 @@ ModelAps.prototype.update = function( id, set, callback ) {
       if( err.code == 404 ) return callback( {
         id:    'aps-update-user_id-invalid',
         code:  404,
-        title: "User not found or not an operator."
+        title: "User not found or not an sharer."
       } );
 
       return callback({

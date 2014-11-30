@@ -50,9 +50,9 @@
 					"id": "http://api.13pm.eu/v1.0/users/roles/guest",
 					"required":true
 				},
-				"operator": {
+				"sharer": {
 					"type":"boolean",
-					"id": "http://api.13pm.eu/v1.0/users/roles/operator",
+					"id": "http://api.13pm.eu/v1.0/users/roles/sharer",
 					"required":true
 				}
 			}

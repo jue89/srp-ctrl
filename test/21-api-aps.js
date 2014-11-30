@@ -19,7 +19,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'emma',
@@ -27,7 +27,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'unconfirmed',
@@ -35,7 +35,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: false, // <--
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'disabled',
@@ -43,7 +43,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: false, // <--
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'god',
@@ -51,7 +51,7 @@ describe('API - APs', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: true, operator: false, guest: false } // <--
+        roles: { vno: true, sharer: false, guest: false } // <--
       }, done ); }
     ], done );
   } );
@@ -164,7 +164,7 @@ describe('API - APs', function() {
       .expect( 404, done );
   } );
 
-  it('should deny changing ap owner to non-operator', function( done ) {
+  it('should deny changing ap owner to non-sharer', function( done ) {
     request(config.base)
       .put('/aps/' + id)
       .type('application/vnd.api+json')

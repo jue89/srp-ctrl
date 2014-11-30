@@ -22,7 +22,7 @@ describe('API - Sessions', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: true, operator: false, guest: false }
+        roles: { vno: true, sharer: false, guest: false }
       }, done ); },
       function( done ) { users.add( {
         id: 'oliver',
@@ -30,7 +30,7 @@ describe('API - Sessions', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { aps.add( {
         user_id: 'oliver',
@@ -46,7 +46,7 @@ describe('API - Sessions', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { aps.add( {
         user_id: 'oscar',
@@ -62,7 +62,7 @@ describe('API - Sessions', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: false, guest: true }
+        roles: { vno: false, sharer: false, guest: true }
       }, done ); },
       function( done ) { uds.add( {
         user_id: 'george',
@@ -89,7 +89,7 @@ describe('API - Sessions', function() {
       .expect( 401, done )
   } );
 
-  it('should deny creating sessions from operators', function( done ) {
+  it('should deny creating sessions from sharers', function( done ) {
     request(config.base)
       .post('/sessions')
       .type('application/vnd.api+json')
@@ -143,14 +143,14 @@ describe('API - Sessions', function() {
       .expect( 200, done )
   } );
 
-  it('should deny non-involed operators to see others sessions', function( done ) {
+  it('should deny non-involed sharers to see others sessions', function( done ) {
     request(config.base)
       .get('/sessions/1234567891')
       .auth('oscar', 'password')
       .expect( 401, done );
   } );
 
-  it('should show session to involved operator', function( done ) {
+  it('should show session to involved sharer', function( done ) {
     request(config.base)
       .get('/sessions/1234567891')
       .auth('oliver', 'password')

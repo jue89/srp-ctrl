@@ -14,7 +14,7 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/sessions', function( req, res ) {
-    req.requireAuth( ['vno','operator','guest'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','sharer','guest'], ['confirmed','enabled'], function() {
 
       // Current user is VNO?
       var vno = req.auth.roles.vno
@@ -153,7 +153,7 @@ module.exports = function( api ) {
   } );
 
   api.get( '/sessions/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator','guest'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','sharer','guest'], ['confirmed','enabled'], function() {
 
       // Current user is VNO?
       var vno = req.auth.roles.vno
@@ -192,7 +192,7 @@ module.exports = function( api ) {
         // VNOs are allowed to see every session
         if( vno ) return res.endJSON( ret );
 
-        // Others must be involved in a session (guest or operator)
+        // Others must be involved in a session (guest or sharer)
         var permited = false;
         async.parallel( [
           function( done ) { apsModel.get(

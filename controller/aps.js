@@ -11,7 +11,7 @@ var config = require( '../lib/config.js' );
 module.exports = function( api ) {
 
   api.get( '/aps', function( req, res ) {
-    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','sharer'], ['confirmed','enabled'], function() {
 
       // Current user is VNO?
       var vno = req.auth.roles.vno
@@ -69,7 +69,7 @@ module.exports = function( api ) {
   } );
 
   api.post( '/aps', function( req, res ) {
-    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','sharer'], ['confirmed','enabled'], function() {
       // Catch malformed transmitted bodys
       if( ! req.body || ! req.body.aps ) return res.status(400).endJSON( {
         errors: {
@@ -102,7 +102,7 @@ module.exports = function( api ) {
   } );
 
   api.get( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator'], ['confirmed','enabled'], function() {
+    req.requireAuth( ['vno','sharer'], ['confirmed','enabled'], function() {
       // Current user is vno?
       var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
@@ -143,7 +143,7 @@ module.exports = function( api ) {
   } );
 
   api.put( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator'], ['enabled'], function() {
+    req.requireAuth( ['vno','sharer'], ['enabled'], function() {
       // Current user is VNO?
       var vno = req.auth.roles.vno
         && req.auth.flags.confirmed
@@ -190,7 +190,7 @@ module.exports = function( api ) {
   } );
 
   api.delete( '/aps/:id', function( req, res ) {
-    req.requireAuth( ['vno','operator'], ['enabled'], function() {
+    req.requireAuth( ['vno','sharer'], ['enabled'], function() {
       // Current user is VNO?
       var vno = req.auth.roles.vno
         && req.auth.flags.confirmed

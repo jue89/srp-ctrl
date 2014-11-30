@@ -24,7 +24,7 @@
   },
   "defaultRoles": {
     "vno": false,
-    "operator": true,
+    "sharer": true,
     "guest": true
   }
 }

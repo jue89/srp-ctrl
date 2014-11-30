@@ -269,7 +269,7 @@ ModelAaas.prototype.add = function( obj, callback ) {
       if( err.code == 404 ) return callback( {
         id:    'aaas-add-user_id-invalid',
         code:  404,
-        title: "User not found or not an operator."
+        title: "User not found or not an sharer."
       } );
 
       return callback({
@@ -330,7 +330,7 @@ ModelAaas.prototype.update = function( id, set, callback ) {
   async.waterfall( [
     function( done ) {
       if( set.user_id ) {
-        // Ensure stated user exists and is operator
+        // Ensure stated user exists and is sharer
         users.get( set.user_id, { filter: { vno: true } }, done );
       } else {
         // Skip when user_id is not changed

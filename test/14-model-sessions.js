@@ -18,7 +18,7 @@ describe( 'model/sessions.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: true, guest: false }
+        roles: { vno: false, sharer: true, guest: false }
       }, done ); },
       function( done ) { aps.add( {
         user_id: 'rolf',
@@ -33,7 +33,7 @@ describe( 'model/sessions.js', function() {
         email: 'test@example.com',
         enabled: true,
         confirmed: true,
-        roles: { vno: false, operator: false, guest: true }
+        roles: { vno: false, sharer: false, guest: true }
       }, done ); },
       function( done ) { uds.add( {
         user_id: 'barbara',
