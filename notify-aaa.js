@@ -3,7 +3,7 @@
 ////////////////////////
 
 var config = require( './lib/config.js' );
-var mqtt = require( 'mqtt' ).createClient( config.mqtt.port, config.mqtt.host );
+var mqtt = require( './lib/mqtt.js' );
 
 var apsModel = require( './model/aps.js' );
 

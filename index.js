@@ -17,6 +17,6 @@ api.listen( config.port, '127.0.0.1' );
 
 
   ////////////////////////
- // MQTT               //
+ // NOTIFIER           //
 ////////////////////////
-var mqtt = require( './mqtt.js' );
+var notifier = require( './notify-aaa.js' );
