@@ -4,6 +4,7 @@
 
 // Libs
 var express = require( 'express' );
+var cors = require('cors');
 var bodyParser = require( 'body-parser' );
 
 // Controller
@@ -64,5 +65,6 @@ api.use( function( err, req, res, next ) {
 ////////////////////////
 
 var app = express();
+app.use( cors() );
 app.use( '/v1.0', api );
 module.exports = app;
