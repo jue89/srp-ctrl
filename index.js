@@ -26,3 +26,10 @@ var notifier = require( './notify-aaa.js' );
  // HEARTBEAT          //
 ////////////////////////
 require( './heartbeat.js' );
+
+
+  ////////////////////////
+ // LOG                //
+////////////////////////
+require( './log.js' );
+
