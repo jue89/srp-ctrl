@@ -20,3 +20,9 @@ api.listen( config.port, '127.0.0.1' );
  // NOTIFIER           //
 ////////////////////////
 var notifier = require( './notify-aaa.js' );
+
+
+  ////////////////////////
+ // HEARTBEAT          //
+////////////////////////
+require( './heartbeat.js' );

@@ -1,4 +1,5 @@
 {
+  "fqdn": "ctrl.example.com",
   "base": "http://localhost:8000/v1.0",
   "port": 8000,
   "db": "mongodb://localhost:27017/test",
