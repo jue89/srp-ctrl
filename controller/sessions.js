@@ -34,8 +34,8 @@ module.exports = function( api ) {
       q.filter  = req.query.filter ? req.query.filter : {};
       q.include = req.query.include ? req.query.include.split(',') : [];
 
-      // VNOs can change pagination limit
-      if( vno && req.query.limit ) q.limit = req.query.limit;
+      // Change pagination limit
+      if( req.query.limit ) q.limit = req.query.limit;
 
       // Require filter by ap_id or ud_id when non-vno
       if( ! vno && ( ! q.filter.ap_id && ! q.filter.ud_id ) ) res.endAuth();

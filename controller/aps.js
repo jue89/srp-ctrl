@@ -31,8 +31,8 @@ module.exports = function( api ) {
       // Only VNOs can request all aps. Otherwise enforce filters
       if( ! vno ) q.filter.user_id = req.auth.id
 
-      // VNOs can change pagination limit
-      if( vno && req.query.limit ) q.limit = req.query.limit;
+      // Change pagination limit
+      if( req.query.limit ) q.limit = req.query.limit;
 
       // And go ...
       apsModel.find( q, function( err, aps ) {
