@@ -3,11 +3,21 @@ var mqtt = require( './lib/mqtt.js' );
 
 function listen( model, event, type, message ) {
 	model.on( event, function( ) {
+		var msg = message( arguments );
+
 		mqtt.publish( 'log', JSON.stringify( {
 			host: config.fqdn,
 			type: type,
-			msg: message( arguments )
+			msg: msg
 		} ) );
+
+		var d = new Date();
+		switch( type ) {
+			case 0: type = 'DEBUG 0'; break;
+			case 1: type = 'DEBUG 1'; break;
+			case 2: type = 'WARN   '; break;
+		}
+		console.log( '%s -- %s -- %s', d.toUTCString(), type, msg );
 	} );
 }
 
@@ -19,7 +29,7 @@ function install( model, name ) {
 		return name + " FETCHED " + arg[0].length + " objects";
 	} );
 	listen( model, 'add', 1, function( arg ) {
-		return name + " CREATED " + arg[0].id + " (" + arg[0].email + ")";
+		return name + " CREATED " + arg[0].id;
 	} );
 	listen( model, 'update', 1, function( arg ) {
 		return name + " UPDATED " + arg[1].id;
