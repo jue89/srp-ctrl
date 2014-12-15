@@ -390,7 +390,7 @@ ModelUds.prototype.remove = function( id, callback ) {
     // Emit event
     self.emit( 'remove', id );
 
-    callback( null, true );
+    callback( null );
   } )
 
 }

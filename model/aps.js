@@ -11,7 +11,7 @@ var ObjectID = require('mongodb').ObjectID;
 var config = require( '../lib/config.js' );
 var mongo = require( '../lib/db.js' );
 var helper = require( '../lib/helper.js' );
-var users = require( '../model/users.js' );
+var users = require( './users.js' );
 
 
   ////////////////////////
@@ -421,7 +421,7 @@ ModelAps.prototype.remove = function( id, callback ) {
     // Emit event
     self.emit( 'remove', id );
 
-    callback( null, true );
+    callback( null );
   } )
 
 }

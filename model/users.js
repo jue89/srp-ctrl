@@ -185,6 +185,8 @@ ModelUsers.prototype.find = function( obj, callback ) {
   var f = obj.filter;
   for( i in f ) {
     switch( i ) {
+      case 'id': q['_id'] = f.id; break;
+      case '_id': q['_id'] = f._id; break;
       case 'email': q['email'] = f.email; break;
       case 'enabled': q['enabled'] = helper.parseBool(f.enabled); break;
       case 'confirmed': q['confirmed'] = helper.parseBool(f.confirmed); break;
@@ -209,7 +211,6 @@ ModelUsers.prototype.find = function( obj, callback ) {
     count: function( cb ) { self.db.count( q, cb ); },
     query: function( cb ) { self.db.find( q, opts ).toArray( cb ); }
   }, function( err, res ) {
-    if( err ) throw err;
     if( err ) return callback( {
       id:    'users-add-unkown',
       code:  500,
@@ -416,8 +417,15 @@ ModelUsers.prototype.update = function( id, set, callback ) {
 
 // FUNC: Removes user
 ModelUsers.prototype.remove = function( id, callback ) {
+  // Late requirement resolves require-loop
+  var aps = require( './aps.js' );
+  var uds = require( './uds.js' );
+  var aaas = require( './aaas.js' );
+
+  var self = this;
+
   // CHECK PRECONDITIONS
-  if( ! this._checkPreconditions( callback ) ) return;
+  if( ! self._checkPreconditions( callback ) ) return;
 
   // Build query
   var q = {};
@@ -437,27 +445,46 @@ ModelUsers.prototype.remove = function( id, callback ) {
     }
   }
 
-  // DELETE QUERY
-  var self = this;
-  this.db.remove( q, { w: 1 }, function( err, num ) {
-    if( err ) return callback( {
-      id:    'users-delete-unkown',
-      code:  500,
-      title: "Unknown server error."
-    } );
+  // Here we go ...
+  async.waterfall( [
+    // FIND AFFECTED USERS
+    function( done ) {
+      self.find( { filter: q, limit: 0 }, function( err, users ) {
+        if( users.count == 0 ) return done( {
+          id:    'users-not-found',
+          code:  404,
+          title: "User not found"
+        } );
 
-    if( num == 0 ) return callback( {
-      id:    'users-not-found',
-      code:  404,
-      title: "User not found"
-    } );
+        done( null, users.data );
+      } );
+    },
+    // REMOVE RELATED OBJECTS
+    function( users, done ) {
+      async.each( users, function( item, done ) {
+        async.parallel( [
+          function( done ) {
+            aps.remove( { user_id: item.id }, function() { done(); } );
+          },
+          function( done ) {
+            uds.remove( { user_id: item.id }, function() { done(); } );
+          },
+          function( done ) {
+            aaas.remove( { user_id: item.id }, function() { done(); } );
+          },
+        ], done );
+      }, done );
+    },
+    // DELETE QUERY
+    function( done ) { self.db.remove( q, { w: 1 }, done ) }
+  ], function( err, num ) {
+    if( err ) return callback( err );
 
     // Emit event
     self.emit( 'remove', id );
 
-    callback( null, true );
-  } )
-
+    callback( null );
+  } );
 }
 
 
